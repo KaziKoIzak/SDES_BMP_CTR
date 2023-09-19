@@ -56,7 +56,6 @@ int Counter[] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 char counter = 0x00;
 
-
 // Expansion permutation table
 int EP[] = {4, 1, 2, 3, 2, 3, 4, 1};
 
@@ -430,15 +429,14 @@ void encryptPixels(unsigned char *pixels, int size)
 
 void decryptPixels(unsigned char *pixels, int size)
 {
-    counter = 0x00;
     for (int i = 0; i < size; i++)
     {
         charToBinary(counter, Counter);
-        xorArrays(Counter, nonce, 8, ciphertext);
-        charToBinary(pixels[i], ciphertext2);
-        Decrypt();
-        xorArrays(plaintext, ciphertext2, 8, plaintext);
-        pixels[i] = binaryArrayToChar(plaintext);
+        xorArrays(Counter, nonce, 8, plaintext);
+        charToBinary(pixels[i], plaintext2);
+        Encrypt();
+        xorArrays(ciphertext, plaintext2, 8, ciphertext);
+        pixels[i] = binaryArrayToChar(ciphertext);
         counter++;
     }
 }
@@ -517,6 +515,7 @@ int main()
     pixelDataSize = infoHeader.imageSize;
     pixels = (unsigned char *)malloc(pixelDataSize);
     fread(pixels, pixelDataSize, 1, input_file);
+    counter = 0x00;
 
     // Encrypt the pixel data
     decryptPixels(pixels, pixelDataSize);
