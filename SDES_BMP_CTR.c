@@ -499,7 +499,7 @@ int main()
 
     free(pixels);
 
-    input_file = fopen("Cipher.bmp", "rb");
+    input_file = fopen("cipher.bmp", "rb");
     output_file = fopen("penguin.bmp", "wb");
 
     if (!input_file || !output_file)
